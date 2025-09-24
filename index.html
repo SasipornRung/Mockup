@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CondoSwift - ตลาดคอนโดออนไลน์</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F9F6F1;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 2px solid #E0D6C9;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #8C6239;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #8C6239;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .tier-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .tier-grey {
+            background: #999;
+            color: white;
+        }
+
+        .tier-green {
+            background: #28a745;
+            color: white;
+        }
+
+        .tier-gold {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            border: 2px solid #C2A386;
+        }
+
+        /* Buttons */
+        .btn {
+            background: #8C6239;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #A97448;
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #C2A386;
+        }
+
+        .btn-secondary:hover {
+            background: #A97448;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #8C6239;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #F9F6F1 0%, #E0D6C9 100%);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #8C6239;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: #666;
+        }
+
+        /* Listings Grid */
+        .listings {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: #8C6239;
+            margin-bottom: 2rem;
+        }
+
+        .category-btn {
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background: #8C6239;
+            color: white;
+        }
+
+        .category-btn:not(.active) {
+            background: white;
+            color: #8C6239;
+            border: 2px solid #8C6239;
+        }
+
+        .category-btn:not(.active):hover {
+            background: #8C6239;
+            color: white;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Base listing card */
+        .listing-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            background: #E0D6C9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #8C6239;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .listing-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .listing-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-grey {
+            background: #999;
+            color: white;
+        }
+
+        .badge-green {
+            background: #28a745;
+            color: white;
+        }
+
+        .badge-gold {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #333;
+            border: 2px solid #C2A386;
+        }
+
+        .listing-content {
+            padding: 1.5rem;
+        }
+
+        .listing-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #8C6239;
+        }
+
+        .listing-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 0.5rem;
+        }
+
+        .listing-details {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .listing-location {
+            color: #8C6239;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+        }
+
+        .close:hover {
+            color: #8C6239;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #E0D6C9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #8C6239;
+            outline: none;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            min-height: calc(100vh - 200px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .verify-section {
+            background: white;
+            border: 1px solid #E0D6C9;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .verify-section h3 {
+            color: #8C6239;
+            margin-bottom: 1rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #E0D6C9;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #8C6239;
+            color: white;
+        }
+
+        .page-btn:disabled {
+            background: #f5f5f5;
+            color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* File Upload */
+        .file-upload {
+            border: 2px dashed #E0D6C9;
+            border-radius: 5px;
+            padding: 2rem;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #8C6239;
+        }
+
+        .file-upload.dragover {
+            border-color: #8C6239;
+            background-color: #f9f6f1;
+        }
+
+        /* Footer */
+        .footer {
+            background: #8C6239;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        /* Error States */
+        .error-message {
+            color: #721c24;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .form-group.error input,
+        .form-group.error textarea,
+        .form-group.error select {
+            border-color: #dc3545;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+
+        .empty-state img {
+            width: 150px;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-direction: row;
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .listings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .modal-content {
+                margin: 10px;
+                width: calc(100% - 20px);
+            }
+        }
+
+        /* Sparkle Animation */
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">CondoSwift</div>
+                <ul class="nav-menu">
+                    <li><a href="#" onclick="showPage('home')" class="nav-link active">หน้าแรก</a></li>
+                    <li><a href="#" onclick="showPage('verify')" class="nav-link">ยืนยันตัวตน</a></li>
+                </ul>
+                <div class="user-info">
+                    <div id="userTier" style="display: none;"></div>
+                    <button id="authBtn" class="btn" onclick="showModal('authModal')">เข้าสู่ระบบ</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page (Combined with Listings) -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>ค้นหาคอนโดในฝัน</h1>
+                <p>แพลตฟอร์มซื้อ-ขายคอนโดที่เชื่อถือได้ เรียบง่าย และปลอดภัย</p>
+                
+                <!-- Sale/Rent Category Selector -->
+                <div style="display: flex; justify-content: center; gap: 1rem; margin: 2rem 0;">
+                    <button id="saleBtn" class="btn category-btn active" onclick="switchCategory('sale')">
+                        ซื้อ
+                    </button>
+                    <button id="rentBtn" class="btn btn-secondary category-btn" onclick="switchCategory('rent')">
+                        เช่า
+                    </button>
+                </div>
+                
+                <!-- Search and Filter Bar -->
+                <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    <input type="text" id="searchInput" placeholder="ค้นหาคอนโด..." 
+                           style="flex: 1; max-width: 400px; padding: 0.75rem; border: 1px solid #E0D6C9; border-radius: 25px; font-size: 1rem; background: rgba(255,255,255,0.9);">
+                    
+                    <div style="position: relative;">
+                        <button id="filterToggle" type="button" onclick="toggleFilterDropdown()" 
+                                style="padding: 0.75rem 1.5rem; border: 1px solid #E0D6C9; border-radius: 25px; background: rgba(255,255,255,0.9); color: #666; cursor: pointer; min-width: 120px; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                            <span id="filterLabel">ตัวกรอง</span>
+                            <span>▼</span>
+                        </button>
+                        
+                        <div id="filterDropdown" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #E0D6C9; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); z-index: 10; margin-top: 0.5rem; min-width: 280px;">
+                            <div style="padding: 1rem;">
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #8C6239;">ทำเลที่ตั้ง</label>
+                                    <select id="locationFilter" onchange="applyFilter()" style="width: 100%; padding: 0.5rem; border: 1px solid #E0D6C9; border-radius: 5px;">
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="ลาดพร้าว">ลาดพร้าว</option>
+                                        <option value="สีลม">สีลม</option>
+                                        <option value="สุขุมวิท">สุขุมวิท</option>
+                                        <option value="ริวเวอร์ไซด์">ริวเวอร์ไซด์</option>
+                                        <option value="บางโพ">บางโพ</option>
+                                    </select>
+                                </div>
+                                
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #8C6239;" id="priceLabel">ช่วงราคาซื้อ</label>
+                                    <select id="priceFilter" onchange="applyFilter()" style="width: 100%; padding: 0.5rem; border: 1px solid #E0D6C9; border-radius: 5px;">
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="0-3000000">ต่ำกว่า 3 ล้าน</option>
+                                        <option value="3000000-5000000">3-5 ล้าน</option>
+                                        <option value="5000000-10000000">5-10 ล้าน</option>
+                                        <option value="10000000-999999999">มากกว่า 10 ล้าน</option>
+                                    </select>
+                                </div>
+                                
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #8C6239;">ระดับการยืนยัน</label>
+                                    <select id="tierFilter" onchange="applyFilter()" style="width: 100%; padding: 0.5rem; border: 1px solid #E0D6C9; border-radius: 5px;">
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="grey">ยืนยันโทรศัพท์</option>
+                                        <option value="green">ยืนยันเอกสาร</option>
+                                        <option value="gold">Exclusive</option>
+                                    </select>
+                                </div>
+                                
+                                <div style="margin-bottom: 1rem;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #8C6239;">ห้องนอน</label>
+                                    <select id="bedroomFilter" onchange="applyFilter()" style="width: 100%; padding: 0.5rem; border: 1px solid #E0D6C9; border-radius: 5px;">
+                                        <option value="">ทั้งหมด</option>
+                                        <option value="1">1 ห้อง</option>
+                                        <option value="2">2 ห้อง</option>
+                                        <option value="3">3 ห้อง</option>
+                                        <option value="4">4+ ห้อง</option>
+                                    </select>
+                                </div>
+                                
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <button onclick="clearAllFilters()" style="flex: 1; padding: 0.5rem; background: #f8f9fa; border: 1px solid #E0D6C9; border-radius: 5px; color: #666; cursor: pointer;">
+                                        ล้างทั้งหมด
+                                    </button>
+                                    <button onclick="toggleFilterDropdown()" style="flex: 1; padding: 0.5rem; background: #8C6239; border: none; border-radius: 5px; color: white; cursor: pointer;">
+                                        ปิด
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" id="postListingBtn" onclick="showPostListingModal()">+ ลงประกาศใหม่</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Listings Section -->
+        <section class="listings">
+            <div class="container">
+                <h2 class="section-title" id="listingTitle">คอนโดสำหรับซื้อ</h2>
+                
+                <div id="loadingAll" class="text-center">
+                    <div class="loading"></div>
+                    <p>กำลังโหลด...</p>
+                </div>
+                <div class="listings-grid" id="allListings"></div>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Verify Page -->
+    <div id="verify" class="page">
+        <section class="listings">
+            <div class="container">
+                <h2 class="section-title">ยืนยันตัวตนและสิทธิ์</h2>
+                
+                <div class="verify-section">
+                    <h3>ระดับ Grey - ยืนยันเบอร์โทรศัพท์</h3>
+                    <p>ยืนยันเบอร์โทรศัพท์เพื่อเริ่มลงประกาศ</p>
+                    <div id="phoneVerifyForm">
+                        <div class="form-group">
+                            <label>หมายเลขโทรศัพท์</label>
+                            <input type="tel" id="phoneNumber" placeholder="08x-xxx-xxxx" required>
+                        </div>
+                        <button type="button" class="btn" onclick="sendOTP()">ส่งรหัส OTP</button>
+                    </div>
+                </div>
+
+                <div class="verify-section" id="documentSection" style="display: none;">
+                    <h3>ระดับ Green - ยืนยันเอกสารสิทธิ์</h3>
+                    <p>อัปโหลดโฉนดที่ดิน/เอกสารสิทธิ์เพื่อรับ Green Verified Badge</p>
+                    <div class="form-group">
+                        <label>อัปโหลดเอกสาร (PDF, JPG, PNG)</label>
+                        <div class="file-upload" id="documentUpload">
+                            <p>ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
+                            <input type="file" id="documentFiles" multiple accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="uploadDocuments()">ส่งคำขอตรวจสอบ</button>
+                </div>
+
+                <div class="verify-section">
+                    <h3>ระดับ Gold - Exclusive Listings</h3>
+                    <p>สำหรับลิสต์ติ้งพิเศษที่ได้รับการคัดสรรแล้ว ติดต่อแอดมิน</p>
+                    <button class="btn" style="background: linear-gradient(45deg, #FFD700, #FFA500); color: #333;">ติดต่อขอสถานะ Gold</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('authModal')">&times;</span>
+            <h2>เข้าสู่ระบบ / สมัครสมาชิก</h2>
+            <div id="alertContainer"></div>
+            <form id="authForm">
+                <div class="form-group">
+                    <label>หมายเลขโทรศัพท์</label>
+                    <input type="tel" id="loginPhone" placeholder="08x-xxx-xxxx" required>
+                </div>
+                <button type="submit" class="btn" id="sendOTPBtn">
+                    <span>ส่งรหัส OTP</span>
+                    <div class="loading" style="display: none;"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- OTP Modal -->
+    <div id="otpModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('otpModal')">&times;</span>
+            <h2>ใส่รหัส OTP</h2>
+            <p>รหัสยืนยันถูกส่งไปที่ <span id="otpPhone"></span></p>
+            <div id="otpAlerts"></div>
+            <form id="otpForm">
+                <div class="form-group">
+                    <label>รหัส OTP</label>
+                    <input type="text" id="otpCode" placeholder="123456" maxlength="6" required>
+                </div>
+                <button type="submit" class="btn" id="verifyOTPBtn">
+                    <span>ยืนยัน</span>
+                    <div class="loading" style="display: none;"></div>
+                </button>
+            </form>
+            <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
+                รหัสสำหรับทดสอบ: 123456 (ใน development mode)
+            </p>
+        </div>
+    </div>
+
+    <!-- Post Listing Modal -->
+    <div id="postListingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('postListingModal')">&times;</span>
+            <h2>ลงประกาศใหม่</h2>
+            <div id="postListingAlerts"></div>
+            <form id="postListingForm">
+                <div class="form-group">
+                    <label>ชื่อโครงการ *</label>
+                    <input type="text" id="projectName" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ราคา (บาท) *</label>
+                        <input type="number" id="price" required min="100000">
+                    </div>
+                    <div class="form-group">
+                        <label>ที่อยู่/ย่าน</label>
+                        <input type="text" id="location">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ห้องนอน</label>
+                        <select id="bedrooms">
+                            <option value="1">1 ห้อง</option>
+                            <option value="2">2 ห้อง</option>
+                            <option value="3">3 ห้อง</option>
+                            <option value="4">4+ ห้อง</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>ห้องน้ำ</label>
+                        <select id="bathrooms">
+                            <option value="1">1 ห้อง</option>
+                            <option value="2">2 ห้อง</option>
+                            <option value="3">3 ห้อง</option>
+                            <option value="4">4+ ห้อง</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>ขนาด (ตร.ม.)</label>
+                        <input type="number" id="size" min="10">
+                    </div>
+                    <div class="form-group">
+                        <label>ชั้น</label>
+                        <input type="number" id="floor" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>รายละเอียด *</label>
+                    <textarea id="description" placeholder="อธิบายรายละเอียดคอนโด, สิ่งอำนวยความสะดวก, สภาพห้อง..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>รูปภาพ (สูงสุด 5 ไฟล์)</label>
+                    <div class="file-upload" id="imageUpload">
+                        <p>ลากไฟล์รูปภาพมาวางที่นี่ หรือคลิกเพื่อเลือก</p>
+                        <input type="file" id="listingImages" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div id="imagePreview" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;"></div>
+                </div>
+
+                <button type="submit" class="btn" id="submitListingBtn">
+                    <span>ลงประกาศ</span>
+                    <div class="loading" style="display: none;"></div>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('contactModal')">&times;</span>
+            <h2>ติดต่อผู้ขาย</h2>
+            <div class="alert alert-warning">
+                <strong>คำเตือน:</strong> ห้ามโอนเงินก่อนเห็นห้องจริง และตรวจสอบเอกสารสิทธิ์ให้ครบถ้วน
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="consentCheck" required>
+                <label for="consentCheck">ฉันรับทราบและยอมรับข้อความเตือนข้างต้น</label>
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <p><strong>เบอร์ติดต่อ:</strong> <span id="contactNumber">กำลังโหลด...</span></p>
+                <button class="btn" id="showContactBtn" onclick="showContact()">แสดงเบอร์เต็ม</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 CondoSwift - แพลตฟอร์มคอนโดที่เชื่อถือได้</p>
+            <p>พัฒนาด้วย ❤️ เพื่อความปลอดภัยในการซื้อ-ขายคอนโด</p>
+        </div>
+    </footer>
+
+    <script>
+        // Configuration
+        const API_BASE_URL = 'http://localhost:3000/api';
+        
+        // State management
+        let currentUser = null;
+        let authToken = null;
+        let currentFilter = 'all';
+        let currentPage = 1;
+        let totalPages = 1;
+        let currentListingId = null;
+        let currentCategory = 'sale'; // 'sale' or 'rent'
+
+        // Mock data for testing without backend
+        const mockListings = [
+            {
+                id: 1,
+                title: 'Life Ladprao',
+                price: 3500000,
+                rentPrice: 25000,
+                description: '1 ห้องนอน, 35 ตร.ม., ชั้น 12, พร้อมเฟอร์นิเจอร์',
+                images: [],
+                tier: 'grey',
+                featured: true,
+                status: 'active',
+                contactPhone: '+66812345678',
+                location: 'ลาดพร้าว',
+                bedrooms: 1,
+                bathrooms: 1,
+                size: 35,
+                floor: 12,
+                forSale: true,
+                forRent: true
+            },
+            {
+                id: 2,
+                title: 'The Lumpini 24',
+                price: 5200000,
+                rentPrice: 35000,
+                description: '2 ห้องนอน, 48 ตร.ม., ชั้น 18, วิวแม่น้ำเจ้าพระยา',
+                images: [],
+                tier: 'green',
+                featured: true,
+                status: 'active',
+                contactPhone: '+66812345679',
+                location: 'สีลม',
+                bedrooms: 2,
+                bathrooms: 2,
+                size: 48,
+                floor: 18,
+                forSale: true,
+                forRent: true
+            },
+            {
+                id: 3,
+                title: 'Magnolias Waterfront',
+                price: 12800000,
+                rentPrice: 80000,
+                description: '3 ห้องนอน, 85 ตร.ม., ชั้น 25, Luxury Riverfront',
+                images: [],
+                tier: 'gold',
+                featured: true,
+                status: 'active',
+                contactPhone: '+66812345680',
+                location: 'ริวเวอร์ไซด์',
+                bedrooms: 3,
+                bathrooms: 3,
+                size: 85,
+                floor: 25,
+                forSale: true,
+                forRent: true
+            },
+            {
+                id: 4,
+                title: 'Chapter One Flow',
+                price: 2890000,
+                rentPrice: 18000,
+                description: '1 ห้องนอน, 28 ตร.ม., ชั้น 8',
+                images: [],
+                tier: 'grey',
+                featured: false,
+                status: 'active',
+                contactPhone: '+66812345681',
+                location: 'บางโพ',
+                bedrooms: 1,
+                bathrooms: 1,
+                size: 28,
+                floor: 8,
+                forSale: true,
+                forRent: false
+            },
+            {
+                id: 5,
+                title: 'Ideo Mobi Sukhumvit',
+                price: 4750000,
+                rentPrice: 28000,
+                description: '1 ห้องนอน, 42 ตร.ม., ชั้น 15',
+                images: [],
+                tier: 'green',
+                featured: false,
+                status: 'active',
+                contactPhone: '+66812345682',
+                location: 'สุขุมวิท',
+                bedrooms: 1,
+                bathrooms: 1,
+                size: 42,
+                floor: 15,
+                forSale: false,
+                forRent: true
+            }
+        ];
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupEventListeners();
+        });
+
+        function initializeApp() {
+            // Check for stored auth token
+            authToken = localStorage.getItem('condoswift_token');
+            if (authToken) {
+                fetchUserProfile();
+            }
+            
+            // Load initial data
+            loadAllListings();
+        }
+
+        function setupEventListeners() {
+            // Auth form
+            document.getElementById('authForm').addEventListener('submit', handleSendOTP);
+            document.getElementById('otpForm').addEventListener('submit', handleVerifyOTP);
+            
+            // Post listing form
+            document.getElementById('postListingForm').addEventListener('submit', handlePostListing);
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    applyFilter();
+                }, 500);
+            });
+
+            // File upload handlers
+            setupFileUpload('imageUpload', 'listingImages', handleImagePreview);
+            setupFileUpload('documentUpload', 'documentFiles');
+
+            // Modal close handlers
+            window.addEventListener('click', function(event) {
+                if (event.target.classList.contains('modal')) {
+                    event.target.style.display = 'none';
+                }
+                
+                // Close filter dropdown when clicking outside
+                if (!event.target.closest('#filterToggle') && !event.target.closest('#filterDropdown')) {
+                    document.getElementById('filterDropdown').style.display = 'none';
+                }
+            });
+        }
+
+        // Filter dropdown functions
+        function toggleFilterDropdown() {
+            const dropdown = document.getElementById('filterDropdown');
+            const isVisible = dropdown.style.display === 'block';
+            dropdown.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function applyFilter() {
+            const search = document.getElementById('searchInput').value;
+            const location = document.getElementById('locationFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            const tier = document.getElementById('tierFilter').value;
+            const bedroom = document.getElementById('bedroomFilter').value;
+            
+            // Update filter label
+            updateFilterLabel();
+            
+            // Apply filters
+            loadAllListings(1, tier || 'all', search, location, priceRange, bedroom);
+        }
+
+        function updateFilterLabel() {
+            const location = document.getElementById('locationFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            const tier = document.getElementById('tierFilter').value;
+            const bedroom = document.getElementById('bedroomFilter').value;
+            
+            const activeFilters = [];
+            
+            if (location) {
+                activeFilters.push(location);
+            }
+            if (priceRange) {
+                const priceText = document.getElementById('priceFilter').options[document.getElementById('priceFilter').selectedIndex].text;
+                activeFilters.push(priceText);
+            }
+            if (tier) {
+                const tierText = document.getElementById('tierFilter').options[document.getElementById('tierFilter').selectedIndex].text;
+                activeFilters.push(tierText);
+            }
+            if (bedroom) {
+                activeFilters.push(bedroom + ' ห้องนอน');
+            }
+            
+            const filterLabel = document.getElementById('filterLabel');
+            if (activeFilters.length > 0) {
+                filterLabel.textContent = activeFilters.slice(0, 2).join(', ') + (activeFilters.length > 2 ? '...' : '');
+                filterLabel.style.color = '#8C6239';
+                filterLabel.style.fontWeight = '500';
+            } else {
+                filterLabel.textContent = 'ตัวกรอง';
+                filterLabel.style.color = '#666';
+                filterLabel.style.fontWeight = 'normal';
+            }
+        }
+
+        function clearAllFilters() {
+            document.getElementById('locationFilter').value = '';
+            document.getElementById('priceFilter').value = '';
+            document.getElementById('tierFilter').value = '';
+            document.getElementById('bedroomFilter').value = '';
+            
+            updateFilterLabel();
+            applyFilter();
+        }
+
+        // API Functions (with fallback to mock data)
+        async function apiCall(endpoint, options = {}) {
+            try {
+                const url = `${API_BASE_URL}${endpoint}`;
+                const config = {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...(authToken && { 'Authorization': `Bearer ${authToken}` })
+                    },
+                    ...options
+                };
+
+                // Don't set Content-Type for FormData
+                if (options.body instanceof FormData) {
+                    delete config.headers['Content-Type'];
+                }
+
+                const response = await fetch(url, config);
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                }
+                
+                return data;
+            } catch (error) {
+                console.warn('API call failed, using mock data:', error);
+                // Fallback to mock data
+                return getMockData(endpoint, options);
+            }
+        }
+
+        function getMockData(endpoint, options) {
+            // Mock responses for testing without backend
+            if (endpoint.includes('/listings')) {
+                if (endpoint.includes('featured=true')) {
+                    return { listings: mockListings.filter(l => l.featured) };
+                }
+                return { 
+                    listings: mockListings,
+                    pagination: {
+                        currentPage: 1,
+                        totalPages: 1,
+                        totalItems: mockListings.length,
+                        hasNext: false,
+                        hasPrev: false
+                    }
+                };
+            }
+            
+            if (endpoint.includes('/auth/send-otp')) {
+                return { message: 'OTP sent', phone: '+66812345678', otp: '123456' };
+            }
+            
+            if (endpoint.includes('/auth/verify-otp')) {
+                return { 
+                    token: 'mock-jwt-token',
+                    user: { id: 1, phone: '+66812345678', tier: 'grey', verified: true }
+                };
+            }
+            
+            return { success: true };
+        }
+
+        // Create listing card with tier-specific styling
+        function createListingCardHTML(listing) {
+            const badgeClass = `badge-${listing.tier}`;
+            const badgeText = getTierLabel(listing.tier);
+            const formattedPrice = new Intl.NumberFormat('th-TH').format(listing.price);
+            
+            // Define tier-specific border styles and effects
+            let borderStyle = '';
+            let topBorder = '';
+            let specialEffects = '';
+            let hoverEffect = '';
+            
+            switch(listing.tier) {
+                case 'grey':
+                    borderStyle = 'border: 2px solid #999;';
+                    topBorder = '<div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #999, #bbb); z-index: 1;"></div>';
+                    hoverEffect = 'onmouseover="this.style.borderColor=\'#777\'; this.style.boxShadow=\'0 15px 35px rgba(153, 153, 153, 0.3)\'; this.style.transform=\'translateY(-8px)\';" onmouseout="this.style.borderColor=\'#999\'; this.style.boxShadow=\'none\'; this.style.transform=\'translateY(0)\';"';
+                    break;
+                    
+                case 'green':
+                    borderStyle = 'border: 2px solid #28a745; box-shadow: 0 2px 15px rgba(40, 167, 69, 0.15);';
+                    topBorder = '<div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #28a745, #20c997); z-index: 1;"></div>';
+                    hoverEffect = 'onmouseover="this.style.borderColor=\'#1e7e34\'; this.style.boxShadow=\'0 15px 35px rgba(40, 167, 69, 0.35)\'; this.style.transform=\'translateY(-8px)\';" onmouseout="this.style.borderColor=\'#28a745\'; this.style.boxShadow=\'0 2px 15px rgba(40, 167, 69, 0.15)\'; this.style.transform=\'translateY(0)\';"';
+                    break;
+                    
+                case 'gold':
+                    borderStyle = 'border: 3px solid #FFD700; box-shadow: 0 4px 20px rgba(255, 215, 0, 0.25);';
+                    topBorder = '<div style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700); z-index: 1;"></div>';
+                    specialEffects = '<div style="position: absolute; top: 12px; left: 12px; font-size: 1.2rem; z-index: 3; animation: sparkle 2s ease-in-out infinite;">✨</div>';
+                    hoverEffect = 'onmouseover="this.style.borderColor=\'#FFA500\'; this.style.boxShadow=\'0 15px 40px rgba(255, 165, 0, 0.4)\'; this.style.transform=\'translateY(-10px)\';" onmouseout="this.style.borderColor=\'#FFD700\'; this.style.boxShadow=\'0 4px 20px rgba(255, 215, 0, 0.25)\'; this.style.transform=\'translateY(0)\';"';
+                    break;
+                    
+                default:
+                    borderStyle = 'border: 2px solid #E0D6C9;';
+                    hoverEffect = 'onmouseover="this.style.transform=\'translateY(-5px)\'; this.style.boxShadow=\'0 10px 25px rgba(140, 98, 57, 0.2)\';" onmouseout="this.style.transform=\'translateY(0)\'; this.style.boxShadow=\'none\';"';
+            }
+            
+            return `
+                <div class="listing-card" 
+                     style="${borderStyle} background: white; border-radius: 12px; overflow: hidden; transition: all 0.3s ease; cursor: pointer; position: relative;"
+                     ${hoverEffect}
+                     onclick="viewListing(${listing.id})">
+                    ${topBorder}
+                    ${specialEffects}
+                    <div class="listing-image" style="position: relative; z-index: 2;">
+                        ${listing.images && listing.images.length > 0 
+                            ? `<img src="${API_BASE_URL.replace('/api', '')}/uploads/${listing.images[0]}" alt="${listing.title}">`
+                            : '<span>รูปภาพ</span>'
+                        }
+                        <div class="listing-badge ${badgeClass}">${badgeText}</div>
+                    </div>
+                    <div class="listing-content" style="position: relative; z-index: 2;">
+                        <div class="listing-title">${listing.title}</div>
+                        <div class="listing-price">฿${formattedPrice}</div>
+                        ${listing.location ? `<div class="listing-location">📍 ${listing.location}</div>` : ''}
+                        <div class="listing-details">
+                            ${listing.bedrooms}ห้องนอน • ${listing.bathrooms}ห้องน้ำ
+                            ${listing.size ? ` • ${listing.size} ตร.ม.` : ''}
+                            ${listing.floor ? ` • ชั้น ${listing.floor}` : ''}
+                        </div>
+                        <button class="btn btn-small" onclick="event.stopPropagation(); contactSeller(${listing.id})">
+                            ติดต่อผู้ขาย
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Authentication functions
+        async function handleSendOTP(event) {
+            event.preventDefault();
+            const phone = document.getElementById('loginPhone').value.trim();
+            const btn = document.getElementById('sendOTPBtn');
+            
+            setButtonLoading(btn, true);
+            
+            try {
+                const response = await apiCall('/auth/send-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({ phone })
+                });
+                
+                document.getElementById('otpPhone').textContent = response.phone;
+                closeModal('authModal');
+                showModal('otpModal');
+                showAlert('otpAlerts', 'success', 'รหัส OTP ถูกส่งแล้ว');
+                
+                // Auto-fill OTP in development
+                if (response.otp) {
+                    document.getElementById('otpCode').value = response.otp;
+                }
+                
+            } catch (error) {
+                showAlert('alertContainer', 'error', error.message);
+            } finally {
+                setButtonLoading(btn, false);
+            }
+        }
+
+        async function handleVerifyOTP(event) {
+            event.preventDefault();
+            const phone = document.getElementById('otpPhone').textContent;
+            const otp = document.getElementById('otpCode').value.trim();
+            const btn = document.getElementById('verifyOTPBtn');
+            
+            setButtonLoading(btn, true);
+            
+            try {
+                const response = await apiCall('/auth/verify-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({ phone, otp })
+                });
+                
+                authToken = response.token;
+                currentUser = response.user;
+                
+                localStorage.setItem('condoswift_token', authToken);
+                
+                updateAuthUI();
+                closeModal('otpModal');
+                showAlert('otpAlerts', 'success', 'เข้าสู่ระบบสำเร็จ!');
+                
+                // Clear forms
+                document.getElementById('authForm').reset();
+                document.getElementById('otpForm').reset();
+                
+            } catch (error) {
+                showAlert('otpAlerts', 'error', error.message);
+            } finally {
+                setButtonLoading(btn, false);
+            }
+        }
+
+        async function fetchUserProfile() {
+            try {
+                const response = await apiCall('/auth/profile');
+                currentUser = response.user;
+                updateAuthUI();
+            } catch (error) {
+                console.error('Failed to fetch user profile:', error);
+                // Set mock user for testing
+                currentUser = { id: 1, phone: '+66812345678', tier: 'grey', verified: true };
+                updateAuthUI();
+            }
+        }
+
+        function updateAuthUI() {
+            const authBtn = document.getElementById('authBtn');
+            const userTier = document.getElementById('userTier');
+            const documentSection = document.getElementById('documentSection');
+            
+            if (currentUser) {
+                authBtn.textContent = 'ออกจากระบบ';
+                authBtn.onclick = logout;
+                
+                // Show user tier
+                userTier.style.display = 'block';
+                userTier.innerHTML = `<span class="tier-badge tier-${currentUser.tier}">${getTierLabel(currentUser.tier)}</span>`;
+                
+                // Show document upload section if user is verified
+                if (currentUser.verified && documentSection) {
+                    documentSection.style.display = 'block';
+                }
+            } else {
+                authBtn.textContent = 'เข้าสู่ระบบ';
+                authBtn.onclick = () => showModal('authModal');
+                userTier.style.display = 'none';
+                
+                if (documentSection) {
+                    documentSection.style.display = 'none';
+                }
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            authToken = null;
+            localStorage.removeItem('condoswift_token');
+            updateAuthUI();
+            alert('ออกจากระบบแล้ว');
+        }
+
+        // Listings functions
+        async function loadFeaturedListings() {
+            const container = document.getElementById('featuredListings');
+            const loading = document.getElementById('loadingFeatured');
+            
+            try {
+                const response = await apiCall('/listings?featured=true&limit=6');
+                displayListings(response.listings, container);
+            } catch (error) {
+                console.error('Failed to load featured listings:', error);
+                container.innerHTML = '<p class="text-center">ไม่สามารถโหลดประกาศได้</p>';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function loadAllListings(page = 1, tier = 'all', search = '', location = '', priceRange = '', bedroom = '') {
+            const container = document.getElementById('allListings');
+            const loading = document.getElementById('loadingAll');
+            const pagination = document.getElementById('pagination');
+            
+            loading.style.display = 'block';
+            
+            try {
+                let url = `/listings?page=${page}&limit=12`;
+                if (tier !== 'all') url += `&tier=${tier}`;
+                if (search) url += `&search=${encodeURIComponent(search)}`;
+                if (location) url += `&location=${encodeURIComponent(location)}`;
+                if (priceRange) url += `&priceRange=${priceRange}`;
+                if (bedroom) url += `&bedroom=${bedroom}`;
+                
+                const response = await apiCall(url);
+                
+                // Apply client-side filtering for mock data
+                let filteredListings = response.listings || mockListings;
+                
+                if (search) {
+                    const searchTerm = search.toLowerCase();
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.title.toLowerCase().includes(searchTerm) ||
+                        listing.description.toLowerCase().includes(searchTerm) ||
+                        listing.location?.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (location) {
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.location === location
+                    );
+                }
+                
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.price >= min && listing.price <= max
+                    );
+                }
+                
+                if (tier && tier !== 'all') {
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.tier === tier
+                    );
+                }
+                
+                if (bedroom) {
+                    const bedroomCount = bedroom === '4' ? 4 : parseInt(bedroom);
+                    filteredListings = filteredListings.filter(listing => {
+                        if (bedroom === '4') {
+                            return listing.bedrooms >= 4;
+                        }
+                        return listing.bedrooms === bedroomCount;
+                    });
+                }
+                
+                displayListings(filteredListings, container);
+                
+                // Mock pagination for filtered results
+                const mockPagination = {
+                    currentPage: 1,
+                    totalPages: 1,
+                    totalItems: filteredListings.length,
+                    hasNext: false,
+                    hasPrev: false
+                };
+                
+                displayPagination(response.pagination || mockPagination, pagination);
+                
+                currentPage = response.pagination?.currentPage || 1;
+                totalPages = response.pagination?.totalPages || 1;
+                
+            } catch (error) {
+                console.error('Failed to load listings:', error);
+                container.innerHTML = '<div class="empty-state"><p>ไม่สามารถโหลดประกาศได้</p></div>';
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        function displayListings(listings, container) {
+            if (!listings || listings.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>ไม่พบประกาศที่ตรงกับเงื่อนไข</p></div>';
+                return;
+            }
+
+            container.innerHTML = listings.map(listing => createListingCardHTML(listing)).join('');
+        }
+
+        function displayPagination(pagination, container) {
+            if (!pagination || pagination.totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <button class="page-btn" ${!pagination.hasPrev ? 'disabled' : ''} 
+                        onclick="changePage(${pagination.currentPage - 1})">
+                    ‹ ก่อนหน้า
+                </button>
+            `;
+            
+            // Page numbers
+            const start = Math.max(1, pagination.currentPage - 2);
+            const end = Math.min(pagination.totalPages, pagination.currentPage + 2);
+            
+            for (let i = start; i <= end; i++) {
+                paginationHTML += `
+                    <button class="page-btn ${i === pagination.currentPage ? 'active' : ''}"
+                            onclick="changePage(${i})">
+                        ${i}
+                    </button>
+                `;
+            }
+            
+            // Next button
+            paginationHTML += `
+                <button class="page-btn" ${!pagination.hasNext ? 'disabled' : ''} 
+                        onclick="changePage(${pagination.currentPage + 1})">
+                    ถัดไป ›
+                </button>
+            `;
+            
+            container.innerHTML = paginationHTML;
+        }
+
+        // Post listing functions
+        async function handlePostListing(event) {
+            event.preventDefault();
+            
+            if (!currentUser) {
+                showAlert('postListingAlerts', 'error', 'กรุณาเข้าสู่ระบบก่อนลงประกาศ');
+                return;
+            }
+
+            const btn = document.getElementById('submitListingBtn');
+            setButtonLoading(btn, true);
+
+            try {
+                const formData = new FormData();
+                const form = document.getElementById('postListingForm');
+                
+                // Add form fields
+                formData.append('title', form.projectName.value.trim());
+                formData.append('price', form.price.value);
+                formData.append('description', form.description.value.trim());
+                formData.append('location', form.location.value.trim());
+                formData.append('bedrooms', form.bedrooms.value);
+                formData.append('bathrooms', form.bathrooms.value);
+                formData.append('size', form.size.value || '0');
+                formData.append('floor', form.floor.value || '1');
+
+                // Add images
+                const imageFiles = document.getElementById('listingImages').files;
+                for (let i = 0; i < imageFiles.length; i++) {
+                    formData.append('images', imageFiles[i]);
+                }
+
+                const response = await apiCall('/listings', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                showAlert('postListingAlerts', 'success', 'ลงประกาศสำเร็จ!');
+                
+                // Reset form
+                form.reset();
+                document.getElementById('imagePreview').innerHTML = '';
+                
+                // Refresh listings
+                if (document.getElementById('listings').classList.contains('active')) {
+                    loadAllListings(currentPage, currentFilter);
+                }
+                
+                setTimeout(() => closeModal('postListingModal'), 1500);
+                
+            } catch (error) {
+                showAlert('postListingAlerts', 'error', error.message || 'เกิดข้อผิดพลาด');
+            } finally {
+                setButtonLoading(btn, false);
+            }
+        }
+
+        // Contact seller functions
+        async function contactSeller(listingId) {
+            currentListingId = listingId;
+            document.getElementById('consentCheck').checked = false;
+            document.getElementById('contactNumber').textContent = '***-***-****';
+            showModal('contactModal');
+        }
+
+        async function showContact() {
+            const checkbox = document.getElementById('consentCheck');
+            if (!checkbox.checked) {
+                alert('กรุณายอมรับข้อตกลงก่อนดูเบอร์ติดต่อ');
+                return;
+            }
+
+            try {
+                const response = await apiCall(`/listings/${currentListingId}/contact`, {
+                    method: 'POST',
+                    body: JSON.stringify({ consent: true })
+                });
+
+                document.getElementById('contactNumber').textContent = response.contactPhone;
+                document.getElementById('showContactBtn').style.display = 'none';
+                
+            } catch (error) {
+                // Mock contact for testing
+                const listing = mockListings.find(l => l.id === currentListingId);
+                if (listing) {
+                    document.getElementById('contactNumber').textContent = listing.contactPhone;
+                    document.getElementById('showContactBtn').style.display = 'none';
+                } else {
+                    alert('ไม่สามารถดูข้อมูลติดต่อได้: ' + error.message);
+                }
+            }
+        }
+
+        // Document upload functions
+        async function sendOTP() {
+            const phone = document.getElementById('phoneNumber').value.trim();
+            
+            if (!phone) {
+                alert('กรุณาใส่หมายเลขโทรศัพท์');
+                return;
+            }
+
+            try {
+                const response = await apiCall('/auth/send-otp', {
+                    method: 'POST',
+                    body: JSON.stringify({ phone })
+                });
+
+                alert(`รหัส OTP ถูกส่งไปที่ ${response.phone}`);
+                document.getElementById('otpPhone').textContent = response.phone;
+                showModal('otpModal');
+                
+                // Auto-fill OTP in development
+                if (response.otp) {
+                    document.getElementById('otpCode').value = response.otp;
+                }
+                
+            } catch (error) {
+                alert('OTP ถูกส่งแล้ว (Mock): รหัส 123456');
+                document.getElementById('otpPhone').textContent = phone;
+                showModal('otpModal');
+                document.getElementById('otpCode').value = '123456';
+            }
+        }
+
+        async function uploadDocuments() {
+            if (!currentUser) {
+                alert('กรุณาเข้าสู่ระบบก่อน');
+                return;
+            }
+
+            const files = document.getElementById('documentFiles').files;
+            if (files.length === 0) {
+                alert('กรุณาเลือกไฟล์เอกสาร');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('documents', files[i]);
+                }
+
+                await apiCall('/auth/upload-documents', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                alert('อัปโหลดเอกสารสำเร็จ! ทีมงานจะตรวจสอบภายใน 2-3 วันทำการ');
+                document.getElementById('documentFiles').value = '';
+                
+            } catch (error) {
+                alert('อัปโหลดเอกสารสำเร็จ (Mock)! ทีมงานจะตรวจสอบภายใน 2-3 วันทำการ');
+                document.getElementById('documentFiles').value = '';
+            }
+        }
+
+        // Utility functions
+        function getTierLabel(tier) {
+            switch (tier) {
+                case 'grey': return 'ยืนยันโทรศัพท์';
+                case 'green': return 'ยืนยันเอกสาร';
+                case 'gold': return 'Exclusive';
+                default: return 'ยืนยันโทรศัพท์';
+            }
+        }
+
+        function setButtonLoading(button, loading) {
+            const span = button.querySelector('span');
+            const loader = button.querySelector('.loading');
+            
+            if (loading) {
+                button.disabled = true;
+                if (span) span.style.display = 'none';
+                if (loader) loader.style.display = 'inline-block';
+            } else {
+                button.disabled = false;
+                if (span) span.style.display = 'inline';
+                if (loader) loader.style.display = 'none';
+            }
+        }
+
+        function showAlert(containerId, type, message) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.innerHTML = `
+                <div class="alert alert-${type}">
+                    ${message}
+                </div>
+            `;
+            
+            // Auto-hide success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 3000);
+            }
+        }
+
+        function setupFileUpload(dropZoneId, inputId, previewCallback = null) {
+            const dropZone = document.getElementById(dropZoneId);
+            const fileInput = document.getElementById(inputId);
+            
+            if (!dropZone || !fileInput) return;
+
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                fileInput.files = e.dataTransfer.files;
+                if (previewCallback) previewCallback();
+            });
+            
+            fileInput.addEventListener('change', () => {
+                if (previewCallback) previewCallback();
+            });
+        }
+
+        function handleImagePreview() {
+            const files = document.getElementById('listingImages').files;
+            const preview = document.getElementById('imagePreview');
+            
+            preview.innerHTML = '';
+            
+            for (let i = 0; i < Math.min(files.length, 5); i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.cssText = 'width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #E0D6C9;';
+                    preview.appendChild(img);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Navigation functions
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update nav active state
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            
+            // Load data if needed
+            if (pageId === 'listings' && document.getElementById('allListings').innerHTML === '') {
+                loadAllListings();
+            }
+        }
+
+        function filterListings(tier) {
+            // This function is no longer used with the new filter design
+            console.log('Old filter function called, redirecting to new system');
+        }
+
+        function changePage(page) {
+            if (page < 1 || page > totalPages) return;
+            
+            const search = document.getElementById('searchInput').value;
+            const location = document.getElementById('locationFilter').value;
+            const priceRange = document.getElementById('priceFilter').value;
+            const tier = document.getElementById('tierFilter').value;
+            const bedroom = document.getElementById('bedroomFilter').value;
+            
+            loadAllListings(page, tier || 'all', search, location, priceRange, bedroom);
+            
+            // Scroll to top of listings
+            document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showPostListingModal() {
+            if (!currentUser) {
+                showModal('authModal');
+                return;
+            }
+            showModal('postListingModal');
+        }
+
+        function viewListing(listingId) {
+            // In a real app, this would navigate to a detailed view
+            contactSeller(listingId);
+        }
+
+        // Modal functions
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Clear alerts when closing modals
+            const alertContainers = ['alertContainer', 'otpAlerts', 'postListingAlerts'];
+            alertContainers.forEach(id => {
+                const container = document.getElementById(id);
+                if (container) container.innerHTML = '';
+            });
+        }
+
+        // Initialize page when listings link is clicked
+        document.addEventListener('click', function(e) {
+            if (e.target.textContent === 'ประกาศทั้งหมด' || e.target.textContent === 'ดูประกาศทั้งหมด') {
+                setTimeout(() => {
+                    if (document.getElementById('allListings').innerHTML === '') {
+                        loadAllListings();
+                    }
+                }, 100);
+            }
+        });
+
+        // Add sparkle animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0%, 100% { 
+                    opacity: 0.7; 
+                    transform: scale(1) rotate(0deg); 
+                }
+                50% { 
+                    opacity: 1; 
+                    transform: scale(1.2) rotate(180deg); 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
