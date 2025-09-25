@@ -133,6 +133,27 @@
             font-size: 0.875rem;
         }
 
+        .category-btn {
+            min-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background: #8C6239;
+            color: white;
+        }
+
+        .category-btn:not(.active) {
+            background: white;
+            color: #8C6239;
+            border: 2px solid #8C6239;
+        }
+
+        .category-btn:not(.active):hover {
+            background: #8C6239;
+            color: white;
+        }
+
         /* Loading Spinner */
         .loading {
             display: inline-block;
@@ -147,6 +168,17 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { 
+                opacity: 0.7; 
+                transform: scale(1) rotate(0deg); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2) rotate(180deg); 
+            }
         }
 
         /* Hero Section */
@@ -178,27 +210,6 @@
             font-size: 2rem;
             color: #8C6239;
             margin-bottom: 2rem;
-        }
-
-        .category-btn {
-            min-width: 100px;
-            transition: all 0.3s ease;
-        }
-
-        .category-btn.active {
-            background: #8C6239;
-            color: white;
-        }
-
-        .category-btn:not(.active) {
-            background: white;
-            color: #8C6239;
-            border: 2px solid #8C6239;
-        }
-
-        .category-btn:not(.active):hover {
-            background: #8C6239;
-            color: white;
         }
 
         .listings-grid {
@@ -443,36 +454,6 @@
             margin-bottom: 1rem;
         }
 
-        /* Pagination */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 2rem;
-        }
-
-        .page-btn {
-            padding: 0.5rem 1rem;
-            border: 1px solid #E0D6C9;
-            background: white;
-            color: #333;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-        }
-
-        .page-btn:hover,
-        .page-btn.active {
-            background: #8C6239;
-            color: white;
-        }
-
-        .page-btn:disabled {
-            background: #f5f5f5;
-            color: #ccc;
-            cursor: not-allowed;
-        }
-
         /* File Upload */
         .file-upload {
             border: 2px dashed #E0D6C9;
@@ -500,30 +481,232 @@
             margin-top: 3rem;
         }
 
-        /* Error States */
-        .error-message {
-            color: #721c24;
-            font-size: 0.875rem;
-            margin-top: 0.25rem;
+        /* Listing Detail Page */
+        .listing-detail {
+            padding: 2rem 0;
         }
 
-        .form-group.error input,
-        .form-group.error textarea,
-        .form-group.error select {
-            border-color: #dc3545;
+        .detail-header {
+            background: white;
+            border: 1px solid #E0D6C9;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
 
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 3rem;
+        .detail-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8C6239;
+            margin-bottom: 1rem;
+        }
+
+        .detail-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .detail-location {
+            color: #8C6239;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             color: #666;
         }
 
-        .empty-state img {
-            width: 150px;
-            opacity: 0.5;
+        .back-btn {
+            background: #f8f9fa;
+            color: #666;
+            border: 1px solid #E0D6C9;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: #e9ecef;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .detail-images {
+            background: white;
+            border: 1px solid #E0D6C9;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 400px;
+            background: #E0D6C9;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8C6239;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            height: 80px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .gallery-item:hover {
+            border-color: #8C6239;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .detail-description {
+            background: white;
+            border: 1px solid #E0D6C9;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-description h3 {
+            color: #8C6239;
+            margin-bottom: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .contact-card {
+            background: white;
+            border: 1px solid #E0D6C9;
+            border-radius: 10px;
+            padding: 2rem;
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .contact-card h3 {
+            color: #8C6239;
+            margin-bottom: 1rem;
+        }
+
+        .seller-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .seller-avatar {
+            width: 60px;
+            height: 60px;
+            background: #8C6239;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .seller-details h4 {
+            color: #333;
+            margin-bottom: 0.25rem;
+        }
+
+        .seller-details p {
+            color: #666;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .detail-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .image-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-image {
+                height: 250px;
+            }
+
+            .contact-card {
+                position: static;
+            }
         }
 
         /* Responsive Design */
@@ -550,21 +733,10 @@
                 grid-template-columns: 1fr;
             }
 
-            .filter-bar {
-                flex-direction: column;
-                align-items: center;
-            }
-
             .modal-content {
                 margin: 10px;
                 width: calc(100% - 20px);
             }
-        }
-
-        /* Sparkle Animation */
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.2); }
         }
     </style>
 </head>
@@ -576,7 +748,6 @@
                 <div class="logo">CondoSwift</div>
                 <ul class="nav-menu">
                     <li><a href="#" onclick="showPage('home')" class="nav-link active">หน้าแรก</a></li>
-                    <li><a href="#" onclick="showPage('verify')" class="nav-link">ยืนยันตัวตน</a></li>
                 </ul>
                 <div class="user-info">
                     <div id="userTier" style="display: none;"></div>
@@ -586,7 +757,7 @@
         </div>
     </header>
 
-    <!-- Home Page (Combined with Listings) -->
+    <!-- Home Page -->
     <div id="home" class="page active">
         <!-- Hero Section -->
         <section class="hero">
@@ -596,11 +767,11 @@
                 
                 <!-- Sale/Rent Category Selector -->
                 <div style="display: flex; justify-content: center; gap: 1rem; margin: 2rem 0;">
-                    <button id="saleBtn" class="btn category-btn active" onclick="switchCategory('sale')">
-                        ซื้อ
-                    </button>
-                    <button id="rentBtn" class="btn btn-secondary category-btn" onclick="switchCategory('rent')">
+                    <button id="rentBtn" class="btn category-btn active" onclick="switchCategory('rent')">
                         เช่า
+                    </button>
+                    <button id="saleBtn" class="btn btn-secondary category-btn" onclick="switchCategory('sale')">
+                        ขาย
                     </button>
                 </div>
                 
@@ -631,13 +802,13 @@
                                 </div>
                                 
                                 <div style="margin-bottom: 1rem;">
-                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #8C6239;" id="priceLabel">ช่วงราคาซื้อ</label>
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #8C6239;" id="priceLabel">ช่วงราคาเช่า</label>
                                     <select id="priceFilter" onchange="applyFilter()" style="width: 100%; padding: 0.5rem; border: 1px solid #E0D6C9; border-radius: 5px;">
                                         <option value="">ทั้งหมด</option>
-                                        <option value="0-3000000">ต่ำกว่า 3 ล้าน</option>
-                                        <option value="3000000-5000000">3-5 ล้าน</option>
-                                        <option value="5000000-10000000">5-10 ล้าน</option>
-                                        <option value="10000000-999999999">มากกว่า 10 ล้าน</option>
+                                        <option value="0-20000">ต่ำกว่า 20,000</option>
+                                        <option value="20000-35000">20,000-35,000</option>
+                                        <option value="35000-50000">35,000-50,000</option>
+                                        <option value="50000-999999999">มากกว่า 50,000</option>
                                     </select>
                                 </div>
                                 
@@ -682,17 +853,172 @@
         <!-- Listings Section -->
         <section class="listings">
             <div class="container">
-                <h2 class="section-title" id="listingTitle">คอนโดสำหรับซื้อ</h2>
+                <h2 class="section-title" id="listingTitle">คอนโดสำหรับเช่า</h2>
                 
                 <div id="loadingAll" class="text-center">
                     <div class="loading"></div>
                     <p>กำลังโหลด...</p>
                 </div>
                 <div class="listings-grid" id="allListings"></div>
-                <div id="pagination" class="pagination"></div>
             </div>
         </section>
     </div>
+
+    <!-- Listing Detail Page -->
+    <div id="listingDetail" class="page">
+        <section class="listing-detail">
+            <div class="container">
+                <button class="back-btn" onclick="showPage('home')">
+                    ← กลับสู่หน้าแรก
+                </button>
+                
+                <!-- Header -->
+                <div class="detail-header">
+                    <div style="display: flex; justify-content: between; align-items: start; gap: 1rem;">
+                        <div style="flex: 1;">
+                            <h1 class="detail-title" id="detailTitle">Loading...</h1>
+                            <div class="detail-price" id="detailPrice">฿0</div>
+                            <div class="detail-location" id="detailLocation">📍 Loading...</div>
+                            <div class="detail-meta" id="detailMeta">
+                                <div class="meta-item">
+                                    <span>🛏️</span>
+                                    <span id="detailBedrooms">0 ห้องนอน</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>🚿</span>
+                                    <span id="detailBathrooms">0 ห้องน้ำ</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>📐</span>
+                                    <span id="detailSize">0 ตร.ม.</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span>🏢</span>
+                                    <span id="detailFloor">ชั้น 0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="detailBadge" style="align-self: flex-start;"></div>
+                    </div>
+                </div>
+
+                <div class="detail-grid">
+                    <!-- Left Column -->
+                    <div>
+                        <!-- Images -->
+                        <div class="detail-images">
+                            <div class="main-image" id="mainImage">
+                                <span>รูปภาพหลัก</span>
+                            </div>
+                            <div class="image-gallery" id="imageGallery">
+                                <div class="gallery-item"><span>1</span></div>
+                                <div class="gallery-item"><span>2</span></div>
+                                <div class="gallery-item"><span>3</span></div>
+                                <div class="gallery-item"><span>4</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="detail-description">
+                            <h3>รายละเอียด</h3>
+                            <p id="detailDescription">Loading description...</p>
+                            
+                            <h4 style="margin-top: 2rem; margin-bottom: 1rem; color: #8C6239;">สิ่งอำนวยความสะดวก</h4>
+                            <div class="features-grid" id="featuresList">
+                                <div class="feature-item">
+                                    <span>🏊</span>
+                                    <span>สระว่ายน้ำ</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>🏋️</span>
+                                    <span>ฟิตเนส</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>🚗</span>
+                                    <span>ที่จอดรถ</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>🛡️</span>
+                                    <span>รักษาความปลอดภัย 24/7</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>🛗</span>
+                                    <span>ลิฟต์</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>🏪</span>
+                                    <span>ร้านสะดวกซื้อ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Section -->
+                        <div class="detail-description">
+                            <h3>ตำแหน่งที่ตั้ง</h3>
+                            <div style="height: 300px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666; margin-top: 1rem;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2rem; margin-bottom: 1rem;">🗺️</div>
+                                    <p>แผนที่แสดงตำแหน่ง</p>
+                                    <p style="font-size: 0.875rem;">Google Maps Integration</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Contact Card -->
+                    <div>
+                        <div class="contact-card">
+                            <h3>ติดต่อผู้ขาย</h3>
+                            
+                            <div class="seller-info">
+                                <div class="seller-avatar" id="sellerAvatar">U</div>
+                                <div class="seller-details">
+                                    <h4 id="sellerName">ผู้ขาย</h4>
+                                    <p id="sellerTier">ยืนยันโทรศัพท์</p>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-warning" style="margin-bottom: 1.5rem;">
+                                <strong>คำเตือน:</strong> ห้ามโอนเงินก่อนเห็นห้องจริง และตรวจสอบเอกสารสิทธิ์ให้ครบถ้วน
+                            </div>
+
+                            <div class="checkbox-group" style="margin-bottom: 1.5rem;">
+                                <input type="checkbox" id="detailConsentCheck" required>
+                                <label for="detailConsentCheck">ฉันรับทราบและยอมรับข้อความเตือนข้างต้น</label>
+                            </div>
+
+                            <div style="text-align: center;">
+                                <p style="margin-bottom: 1rem;"><strong>เบอร์ติดต่อ:</strong> <span id="detailContactNumber">***-***-****</span></p>
+                                <button class="btn" id="detailShowContactBtn" onclick="showDetailContact()" style="width: 100%; margin-bottom: 1rem;">
+                                    แสดงเบอร์เต็ม
+                                </button>
+                                <button class="btn btn-secondary" onclick="shareListing()" style="width: 100%;">
+                                    📤 แชร์ประกาศ
+                                </button>
+                            </div>
+
+                            <!-- Quick Info -->
+                            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #E0D6C9;">
+                                <h4 style="color: #8C6239; margin-bottom: 1rem;">ข้อมูลเพิ่มเติม</h4>
+                                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;">
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>รหัสประกาศ:</span>
+                                        <span id="listingCode">CS-001</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>วันที่ลงประกาศ:</span>
+                                        <span id="listingDate">15 ม.ค. 2568</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>จำนวนผู้ชม:</span>
+                                        <span>245 ครั้ง</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
     <!-- Verify Page -->
     <div id="verify" class="page">
@@ -740,6 +1066,8 @@
             <span class="close" onclick="closeModal('authModal')">&times;</span>
             <h2>เข้าสู่ระบบ / สมัครสมาชิก</h2>
             <div id="alertContainer"></div>
+            
+            <!-- Phone Verification Section -->
             <form id="authForm">
                 <div class="form-group">
                     <label>หมายเลขโทรศัพท์</label>
@@ -750,6 +1078,27 @@
                     <div class="loading" style="display: none;"></div>
                 </button>
             </form>
+            
+            <!-- Document Upload Section (shown after login) -->
+            <div id="documentUploadSection" style="display: none; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #E0D6C9;">
+                <h3 style="color: #8C6239; margin-bottom: 1rem;">ยืนยันเอกสารสิทธิ์ (Green Verified)</h3>
+                <p style="margin-bottom: 1rem; color: #666;">อัปโหลดโฉนดที่ดิน/เอกสารสิทธิ์เพื่อรับ Green Verified Badge</p>
+                
+                <div class="form-group">
+                    <label>อัปโหลดเอกสาร (PDF, JPG, PNG)</label>
+                    <div class="file-upload" id="documentUpload" onclick="document.getElementById('documentFiles').click()">
+                        <p>ลากไฟล์มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
+                        <input type="file" id="documentFiles" multiple accept=".pdf,.jpg,.jpeg,.png" style="display: none;">
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="uploadDocuments()">ส่งคำขอตรวจสอบ</button>
+                
+                <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #E0D6C9;">
+                    <h4 style="color: #8C6239; margin-bottom: 0.5rem;">Gold Exclusive</h4>
+                    <p style="color: #666; margin-bottom: 1rem;">สำหรับลิสต์ติ้งพิเศษที่ได้รับการคัดสรรแล้ว</p>
+                    <button class="btn" style="background: linear-gradient(45deg, #FFD700, #FFA500); color: #333;">ติดต่อขอสถานะ Gold</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -771,7 +1120,7 @@
                 </button>
             </form>
             <p style="margin-top: 1rem; color: #666; font-size: 0.875rem;">
-                รหัสสำหรับทดสอบ: 123456 (ใน development mode)
+                รหัสสำหรับทดสอบ: 123456
             </p>
         </div>
     </div>
@@ -791,7 +1140,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>ราคา (บาท) *</label>
-                        <input type="number" id="price" required min="100000">
+                        <input type="number" id="price" required min="1000">
                     </div>
                     <div class="form-group">
                         <label>ที่อยู่/ย่าน</label>
@@ -836,15 +1185,6 @@
                     <textarea id="description" placeholder="อธิบายรายละเอียดคอนโด, สิ่งอำนวยความสะดวก, สภาพห้อง..." required></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label>รูปภาพ (สูงสุด 5 ไฟล์)</label>
-                    <div class="file-upload" id="imageUpload">
-                        <p>ลากไฟล์รูปภาพมาวางที่นี่ หรือคลิกเพื่อเลือก</p>
-                        <input type="file" id="listingImages" multiple accept="image/*" style="display: none;">
-                    </div>
-                    <div id="imagePreview" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem;"></div>
-                </div>
-
                 <button type="submit" class="btn" id="submitListingBtn">
                     <span>ลงประกาศ</span>
                     <div class="loading" style="display: none;"></div>
@@ -887,13 +1227,10 @@
         // State management
         let currentUser = null;
         let authToken = null;
-        let currentFilter = 'all';
-        let currentPage = 1;
-        let totalPages = 1;
         let currentListingId = null;
-        let currentCategory = 'sale'; // 'sale' or 'rent'
+        let currentCategory = 'rent';
 
-        // Mock data for testing without backend
+        // Mock data
         const mockListings = [
             {
                 id: 1,
@@ -992,45 +1329,40 @@
             }
         ];
 
+        let mockFeatures = [
+            '🏊 สระว่ายน้ำ',
+            '🏋️ ฟิตเนส',  
+            '🚗 ที่จอดรถ',
+            '🛡️ รักษาความปลอดภัย 24/7',
+            '🛗 ลิฟต์',
+            '🏪 ร้านสะดวกซื้อ',
+            '📶 WiFi ทั่วตึก',
+            '🌳 สวนสาธารณะ',
+            '🏪 ห้องแม่บ้าน',
+            '👨‍💼 ฝ่ายต้อนรับ (Reception)'
+        ];
+
         // Initialize app
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
             setupEventListeners();
+            loadAllListings();
         });
 
-        function initializeApp() {
-            // Check for stored auth token
-            authToken = localStorage.getItem('condoswift_token');
-            if (authToken) {
-                fetchUserProfile();
-            }
-            
-            // Load initial data
-            loadAllListings();
-        }
-
         function setupEventListeners() {
-            // Auth form
+            // Auth forms
             document.getElementById('authForm').addEventListener('submit', handleSendOTP);
             document.getElementById('otpForm').addEventListener('submit', handleVerifyOTP);
-            
-            // Post listing form
             document.getElementById('postListingForm').addEventListener('submit', handlePostListing);
             
             // Search functionality
             const searchInput = document.getElementById('searchInput');
             let searchTimeout;
-            
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
                 searchTimeout = setTimeout(() => {
                     applyFilter();
                 }, 500);
             });
-
-            // File upload handlers
-            setupFileUpload('imageUpload', 'listingImages', handleImagePreview);
-            setupFileUpload('documentUpload', 'documentFiles');
 
             // Modal close handlers
             window.addEventListener('click', function(event) {
@@ -1045,7 +1377,55 @@
             });
         }
 
-        // Filter dropdown functions
+        // Category switching
+        function switchCategory(category) {
+            currentCategory = category;
+            
+            // Update button styles
+            document.getElementById('rentBtn').classList.toggle('active', category === 'rent');
+            document.getElementById('saleBtn').classList.toggle('active', category === 'sale');
+            
+            // Update title and price label
+            const title = document.getElementById('listingTitle');
+            const priceLabel = document.getElementById('priceLabel');
+            
+            if (category === 'rent') {
+                title.textContent = 'คอนโดสำหรับเช่า';
+                priceLabel.textContent = 'ช่วงราคาเช่า';
+                updatePriceOptions('rent');
+            } else {
+                title.textContent = 'คอนโดสำหรับขาย';
+                priceLabel.textContent = 'ช่วงราคาขาย';
+                updatePriceOptions('sale');
+            }
+            
+            clearAllFilters();
+            applyFilter();
+        }
+
+        function updatePriceOptions(category) {
+            const priceFilter = document.getElementById('priceFilter');
+            
+            if (category === 'rent') {
+                priceFilter.innerHTML = `
+                    <option value="">ทั้งหมด</option>
+                    <option value="0-20000">ต่ำกว่า 20,000</option>
+                    <option value="20000-35000">20,000-35,000</option>
+                    <option value="35000-50000">35,000-50,000</option>
+                    <option value="50000-999999999">มากกว่า 50,000</option>
+                `;
+            } else {
+                priceFilter.innerHTML = `
+                    <option value="">ทั้งหมด</option>
+                    <option value="0-3000000">ต่ำกว่า 3 ล้าน</option>
+                    <option value="3000000-5000000">3-5 ล้าน</option>
+                    <option value="5000000-10000000">5-10 ล้าน</option>
+                    <option value="10000000-999999999">มากกว่า 10 ล้าน</option>
+                `;
+            }
+        }
+
+        // Filter functions
         function toggleFilterDropdown() {
             const dropdown = document.getElementById('filterDropdown');
             const isVisible = dropdown.style.display === 'block';
@@ -1059,10 +1439,7 @@
             const tier = document.getElementById('tierFilter').value;
             const bedroom = document.getElementById('bedroomFilter').value;
             
-            // Update filter label
             updateFilterLabel();
-            
-            // Apply filters
             loadAllListings(1, tier || 'all', search, location, priceRange, bedroom);
         }
 
@@ -1074,9 +1451,7 @@
             
             const activeFilters = [];
             
-            if (location) {
-                activeFilters.push(location);
-            }
+            if (location) activeFilters.push(location);
             if (priceRange) {
                 const priceText = document.getElementById('priceFilter').options[document.getElementById('priceFilter').selectedIndex].text;
                 activeFilters.push(priceText);
@@ -1085,9 +1460,7 @@
                 const tierText = document.getElementById('tierFilter').options[document.getElementById('tierFilter').selectedIndex].text;
                 activeFilters.push(tierText);
             }
-            if (bedroom) {
-                activeFilters.push(bedroom + ' ห้องนอน');
-            }
+            if (bedroom) activeFilters.push(bedroom + ' ห้องนอน');
             
             const filterLabel = document.getElementById('filterLabel');
             if (activeFilters.length > 0) {
@@ -1106,82 +1479,94 @@
             document.getElementById('priceFilter').value = '';
             document.getElementById('tierFilter').value = '';
             document.getElementById('bedroomFilter').value = '';
-            
             updateFilterLabel();
             applyFilter();
         }
 
-        // API Functions (with fallback to mock data)
-        async function apiCall(endpoint, options = {}) {
+        // Load listings
+        async function loadAllListings(page = 1, tier = 'all', search = '', location = '', priceRange = '', bedroom = '') {
+            const container = document.getElementById('allListings');
+            const loading = document.getElementById('loadingAll');
+            
+            loading.style.display = 'block';
+            
             try {
-                const url = `${API_BASE_URL}${endpoint}`;
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        ...(authToken && { 'Authorization': `Bearer ${authToken}` })
-                    },
-                    ...options
-                };
-
-                // Don't set Content-Type for FormData
-                if (options.body instanceof FormData) {
-                    delete config.headers['Content-Type'];
-                }
-
-                const response = await fetch(url, config);
-                const data = await response.json();
+                // Apply client-side filtering for mock data
+                let filteredListings = mockListings;
                 
-                if (!response.ok) {
-                    throw new Error(data.error || `HTTP error! status: ${response.status}`);
+                // Filter by category (sale/rent)
+                if (currentCategory === 'sale') {
+                    filteredListings = filteredListings.filter(listing => listing.forSale);
+                } else if (currentCategory === 'rent') {
+                    filteredListings = filteredListings.filter(listing => listing.forRent);
                 }
                 
-                return data;
+                if (search) {
+                    const searchTerm = search.toLowerCase();
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.title.toLowerCase().includes(searchTerm) ||
+                        listing.description.toLowerCase().includes(searchTerm) ||
+                        listing.location?.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (location) {
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.location === location
+                    );
+                }
+                
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(Number);
+                    filteredListings = filteredListings.filter(listing => {
+                        const price = currentCategory === 'rent' ? listing.rentPrice : listing.price;
+                        return price >= min && price <= max;
+                    });
+                }
+                
+                if (tier && tier !== 'all') {
+                    filteredListings = filteredListings.filter(listing => 
+                        listing.tier === tier
+                    );
+                }
+                
+                if (bedroom) {
+                    const bedroomCount = bedroom === '4' ? 4 : parseInt(bedroom);
+                    filteredListings = filteredListings.filter(listing => {
+                        if (bedroom === '4') {
+                            return listing.bedrooms >= 4;
+                        }
+                        return listing.bedrooms === bedroomCount;
+                    });
+                }
+                
+                displayListings(filteredListings, container);
+                
             } catch (error) {
-                console.warn('API call failed, using mock data:', error);
-                // Fallback to mock data
-                return getMockData(endpoint, options);
+                console.error('Failed to load listings:', error);
+                container.innerHTML = '<div class="empty-state"><p>ไม่สามารถโหลดประกาศได้</p></div>';
+            } finally {
+                loading.style.display = 'none';
             }
         }
 
-        function getMockData(endpoint, options) {
-            // Mock responses for testing without backend
-            if (endpoint.includes('/listings')) {
-                if (endpoint.includes('featured=true')) {
-                    return { listings: mockListings.filter(l => l.featured) };
-                }
-                return { 
-                    listings: mockListings,
-                    pagination: {
-                        currentPage: 1,
-                        totalPages: 1,
-                        totalItems: mockListings.length,
-                        hasNext: false,
-                        hasPrev: false
-                    }
-                };
+        function displayListings(listings, container) {
+            if (!listings || listings.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>ไม่พบประกาศที่ตรงกับเงื่อนไข</p></div>';
+                return;
             }
-            
-            if (endpoint.includes('/auth/send-otp')) {
-                return { message: 'OTP sent', phone: '+66812345678', otp: '123456' };
-            }
-            
-            if (endpoint.includes('/auth/verify-otp')) {
-                return { 
-                    token: 'mock-jwt-token',
-                    user: { id: 1, phone: '+66812345678', tier: 'grey', verified: true }
-                };
-            }
-            
-            return { success: true };
+
+            container.innerHTML = listings.map(listing => createListingCardHTML(listing)).join('');
         }
 
-        // Create listing card with tier-specific styling
         function createListingCardHTML(listing) {
             const badgeClass = `badge-${listing.tier}`;
             const badgeText = getTierLabel(listing.tier);
-            const formattedPrice = new Intl.NumberFormat('th-TH').format(listing.price);
             
-            // Define tier-specific border styles and effects
+            const displayPrice = currentCategory === 'rent' ? listing.rentPrice : listing.price;
+            const pricePrefix = currentCategory === 'rent' ? '/เดือน' : '';
+            const formattedPrice = new Intl.NumberFormat('th-TH').format(displayPrice);
+            
             let borderStyle = '';
             let topBorder = '';
             let specialEffects = '';
@@ -1220,15 +1605,12 @@
                     ${topBorder}
                     ${specialEffects}
                     <div class="listing-image" style="position: relative; z-index: 2;">
-                        ${listing.images && listing.images.length > 0 
-                            ? `<img src="${API_BASE_URL.replace('/api', '')}/uploads/${listing.images[0]}" alt="${listing.title}">`
-                            : '<span>รูปภาพ</span>'
-                        }
+                        <span>รูปภาพ</span>
                         <div class="listing-badge ${badgeClass}">${badgeText}</div>
                     </div>
                     <div class="listing-content" style="position: relative; z-index: 2;">
                         <div class="listing-title">${listing.title}</div>
-                        <div class="listing-price">฿${formattedPrice}</div>
+                        <div class="listing-price">฿${formattedPrice}${pricePrefix}</div>
                         ${listing.location ? `<div class="listing-location">📍 ${listing.location}</div>` : ''}
                         <div class="listing-details">
                             ${listing.bedrooms}ห้องนอน • ${listing.bathrooms}ห้องน้ำ
@@ -1243,98 +1625,45 @@
             `;
         }
 
-        // Authentication functions
+        // Auth functions
         async function handleSendOTP(event) {
             event.preventDefault();
             const phone = document.getElementById('loginPhone').value.trim();
-            const btn = document.getElementById('sendOTPBtn');
-            
-            setButtonLoading(btn, true);
-            
-            try {
-                const response = await apiCall('/auth/send-otp', {
-                    method: 'POST',
-                    body: JSON.stringify({ phone })
-                });
-                
-                document.getElementById('otpPhone').textContent = response.phone;
-                closeModal('authModal');
-                showModal('otpModal');
-                showAlert('otpAlerts', 'success', 'รหัส OTP ถูกส่งแล้ว');
-                
-                // Auto-fill OTP in development
-                if (response.otp) {
-                    document.getElementById('otpCode').value = response.otp;
-                }
-                
-            } catch (error) {
-                showAlert('alertContainer', 'error', error.message);
-            } finally {
-                setButtonLoading(btn, false);
-            }
+            showAlert('alertContainer', 'success', 'รหัส OTP ถูกส่งแล้ว (Mock)');
+            document.getElementById('otpPhone').textContent = phone;
+            closeModal('authModal');
+            showModal('otpModal');
+            document.getElementById('otpCode').value = '123456';
         }
 
         async function handleVerifyOTP(event) {
             event.preventDefault();
-            const phone = document.getElementById('otpPhone').textContent;
             const otp = document.getElementById('otpCode').value.trim();
-            const btn = document.getElementById('verifyOTPBtn');
             
-            setButtonLoading(btn, true);
-            
-            try {
-                const response = await apiCall('/auth/verify-otp', {
-                    method: 'POST',
-                    body: JSON.stringify({ phone, otp })
-                });
-                
-                authToken = response.token;
-                currentUser = response.user;
-                
-                localStorage.setItem('condoswift_token', authToken);
-                
+            if (otp === '123456') {
+                currentUser = { id: 1, phone: '+66812345678', tier: 'grey', verified: true };
                 updateAuthUI();
                 closeModal('otpModal');
                 showAlert('otpAlerts', 'success', 'เข้าสู่ระบบสำเร็จ!');
-                
-                // Clear forms
                 document.getElementById('authForm').reset();
                 document.getElementById('otpForm').reset();
-                
-            } catch (error) {
-                showAlert('otpAlerts', 'error', error.message);
-            } finally {
-                setButtonLoading(btn, false);
-            }
-        }
-
-        async function fetchUserProfile() {
-            try {
-                const response = await apiCall('/auth/profile');
-                currentUser = response.user;
-                updateAuthUI();
-            } catch (error) {
-                console.error('Failed to fetch user profile:', error);
-                // Set mock user for testing
-                currentUser = { id: 1, phone: '+66812345678', tier: 'grey', verified: true };
-                updateAuthUI();
+            } else {
+                showAlert('otpAlerts', 'error', 'รหัส OTP ไม่ถูกต้อง');
             }
         }
 
         function updateAuthUI() {
             const authBtn = document.getElementById('authBtn');
             const userTier = document.getElementById('userTier');
-            const documentSection = document.getElementById('documentSection');
+            const documentSection = document.getElementById('documentUploadSection');
             
             if (currentUser) {
                 authBtn.textContent = 'ออกจากระบบ';
                 authBtn.onclick = logout;
-                
-                // Show user tier
                 userTier.style.display = 'block';
                 userTier.innerHTML = `<span class="tier-badge tier-${currentUser.tier}">${getTierLabel(currentUser.tier)}</span>`;
                 
-                // Show document upload section if user is verified
+                // Show document upload section in auth modal
                 if (currentUser.verified && documentSection) {
                     documentSection.style.display = 'block';
                 }
@@ -1351,160 +1680,11 @@
 
         function logout() {
             currentUser = null;
-            authToken = null;
-            localStorage.removeItem('condoswift_token');
             updateAuthUI();
             alert('ออกจากระบบแล้ว');
         }
 
-        // Listings functions
-        async function loadFeaturedListings() {
-            const container = document.getElementById('featuredListings');
-            const loading = document.getElementById('loadingFeatured');
-            
-            try {
-                const response = await apiCall('/listings?featured=true&limit=6');
-                displayListings(response.listings, container);
-            } catch (error) {
-                console.error('Failed to load featured listings:', error);
-                container.innerHTML = '<p class="text-center">ไม่สามารถโหลดประกาศได้</p>';
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-
-        async function loadAllListings(page = 1, tier = 'all', search = '', location = '', priceRange = '', bedroom = '') {
-            const container = document.getElementById('allListings');
-            const loading = document.getElementById('loadingAll');
-            const pagination = document.getElementById('pagination');
-            
-            loading.style.display = 'block';
-            
-            try {
-                let url = `/listings?page=${page}&limit=12`;
-                if (tier !== 'all') url += `&tier=${tier}`;
-                if (search) url += `&search=${encodeURIComponent(search)}`;
-                if (location) url += `&location=${encodeURIComponent(location)}`;
-                if (priceRange) url += `&priceRange=${priceRange}`;
-                if (bedroom) url += `&bedroom=${bedroom}`;
-                
-                const response = await apiCall(url);
-                
-                // Apply client-side filtering for mock data
-                let filteredListings = response.listings || mockListings;
-                
-                if (search) {
-                    const searchTerm = search.toLowerCase();
-                    filteredListings = filteredListings.filter(listing => 
-                        listing.title.toLowerCase().includes(searchTerm) ||
-                        listing.description.toLowerCase().includes(searchTerm) ||
-                        listing.location?.toLowerCase().includes(searchTerm)
-                    );
-                }
-                
-                if (location) {
-                    filteredListings = filteredListings.filter(listing => 
-                        listing.location === location
-                    );
-                }
-                
-                if (priceRange) {
-                    const [min, max] = priceRange.split('-').map(Number);
-                    filteredListings = filteredListings.filter(listing => 
-                        listing.price >= min && listing.price <= max
-                    );
-                }
-                
-                if (tier && tier !== 'all') {
-                    filteredListings = filteredListings.filter(listing => 
-                        listing.tier === tier
-                    );
-                }
-                
-                if (bedroom) {
-                    const bedroomCount = bedroom === '4' ? 4 : parseInt(bedroom);
-                    filteredListings = filteredListings.filter(listing => {
-                        if (bedroom === '4') {
-                            return listing.bedrooms >= 4;
-                        }
-                        return listing.bedrooms === bedroomCount;
-                    });
-                }
-                
-                displayListings(filteredListings, container);
-                
-                // Mock pagination for filtered results
-                const mockPagination = {
-                    currentPage: 1,
-                    totalPages: 1,
-                    totalItems: filteredListings.length,
-                    hasNext: false,
-                    hasPrev: false
-                };
-                
-                displayPagination(response.pagination || mockPagination, pagination);
-                
-                currentPage = response.pagination?.currentPage || 1;
-                totalPages = response.pagination?.totalPages || 1;
-                
-            } catch (error) {
-                console.error('Failed to load listings:', error);
-                container.innerHTML = '<div class="empty-state"><p>ไม่สามารถโหลดประกาศได้</p></div>';
-            } finally {
-                loading.style.display = 'none';
-            }
-        }
-
-        function displayListings(listings, container) {
-            if (!listings || listings.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>ไม่พบประกาศที่ตรงกับเงื่อนไข</p></div>';
-                return;
-            }
-
-            container.innerHTML = listings.map(listing => createListingCardHTML(listing)).join('');
-        }
-
-        function displayPagination(pagination, container) {
-            if (!pagination || pagination.totalPages <= 1) {
-                container.innerHTML = '';
-                return;
-            }
-
-            let paginationHTML = '';
-            
-            // Previous button
-            paginationHTML += `
-                <button class="page-btn" ${!pagination.hasPrev ? 'disabled' : ''} 
-                        onclick="changePage(${pagination.currentPage - 1})">
-                    ‹ ก่อนหน้า
-                </button>
-            `;
-            
-            // Page numbers
-            const start = Math.max(1, pagination.currentPage - 2);
-            const end = Math.min(pagination.totalPages, pagination.currentPage + 2);
-            
-            for (let i = start; i <= end; i++) {
-                paginationHTML += `
-                    <button class="page-btn ${i === pagination.currentPage ? 'active' : ''}"
-                            onclick="changePage(${i})">
-                        ${i}
-                    </button>
-                `;
-            }
-            
-            // Next button
-            paginationHTML += `
-                <button class="page-btn" ${!pagination.hasNext ? 'disabled' : ''} 
-                        onclick="changePage(${pagination.currentPage + 1})">
-                    ถัดไป ›
-                </button>
-            `;
-            
-            container.innerHTML = paginationHTML;
-        }
-
-        // Post listing functions
+        // Post listing
         async function handlePostListing(event) {
             event.preventDefault();
             
@@ -1513,55 +1693,20 @@
                 return;
             }
 
-            const btn = document.getElementById('submitListingBtn');
-            setButtonLoading(btn, true);
-
-            try {
-                const formData = new FormData();
-                const form = document.getElementById('postListingForm');
-                
-                // Add form fields
-                formData.append('title', form.projectName.value.trim());
-                formData.append('price', form.price.value);
-                formData.append('description', form.description.value.trim());
-                formData.append('location', form.location.value.trim());
-                formData.append('bedrooms', form.bedrooms.value);
-                formData.append('bathrooms', form.bathrooms.value);
-                formData.append('size', form.size.value || '0');
-                formData.append('floor', form.floor.value || '1');
-
-                // Add images
-                const imageFiles = document.getElementById('listingImages').files;
-                for (let i = 0; i < imageFiles.length; i++) {
-                    formData.append('images', imageFiles[i]);
-                }
-
-                const response = await apiCall('/listings', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                showAlert('postListingAlerts', 'success', 'ลงประกาศสำเร็จ!');
-                
-                // Reset form
-                form.reset();
-                document.getElementById('imagePreview').innerHTML = '';
-                
-                // Refresh listings
-                if (document.getElementById('listings').classList.contains('active')) {
-                    loadAllListings(currentPage, currentFilter);
-                }
-                
-                setTimeout(() => closeModal('postListingModal'), 1500);
-                
-            } catch (error) {
-                showAlert('postListingAlerts', 'error', error.message || 'เกิดข้อผิดพลาด');
-            } finally {
-                setButtonLoading(btn, false);
-            }
+            showAlert('postListingAlerts', 'success', 'ลงประกาศสำเร็จ!');
+            document.getElementById('postListingForm').reset();
+            setTimeout(() => closeModal('postListingModal'), 1500);
         }
 
-        // Contact seller functions
+        function showPostListingModal() {
+            if (!currentUser) {
+                showModal('authModal');
+                return;
+            }
+            showModal('postListingModal');
+        }
+
+        // Contact functions
         async function contactSeller(listingId) {
             currentListingId = listingId;
             document.getElementById('consentCheck').checked = false;
@@ -1576,59 +1721,14 @@
                 return;
             }
 
-            try {
-                const response = await apiCall(`/listings/${currentListingId}/contact`, {
-                    method: 'POST',
-                    body: JSON.stringify({ consent: true })
-                });
-
-                document.getElementById('contactNumber').textContent = response.contactPhone;
+            const listing = mockListings.find(l => l.id === currentListingId);
+            if (listing) {
+                document.getElementById('contactNumber').textContent = listing.contactPhone;
                 document.getElementById('showContactBtn').style.display = 'none';
-                
-            } catch (error) {
-                // Mock contact for testing
-                const listing = mockListings.find(l => l.id === currentListingId);
-                if (listing) {
-                    document.getElementById('contactNumber').textContent = listing.contactPhone;
-                    document.getElementById('showContactBtn').style.display = 'none';
-                } else {
-                    alert('ไม่สามารถดูข้อมูลติดต่อได้: ' + error.message);
-                }
             }
         }
 
         // Document upload functions
-        async function sendOTP() {
-            const phone = document.getElementById('phoneNumber').value.trim();
-            
-            if (!phone) {
-                alert('กรุณาใส่หมายเลขโทรศัพท์');
-                return;
-            }
-
-            try {
-                const response = await apiCall('/auth/send-otp', {
-                    method: 'POST',
-                    body: JSON.stringify({ phone })
-                });
-
-                alert(`รหัส OTP ถูกส่งไปที่ ${response.phone}`);
-                document.getElementById('otpPhone').textContent = response.phone;
-                showModal('otpModal');
-                
-                // Auto-fill OTP in development
-                if (response.otp) {
-                    document.getElementById('otpCode').value = response.otp;
-                }
-                
-            } catch (error) {
-                alert('OTP ถูกส่งแล้ว (Mock): รหัส 123456');
-                document.getElementById('otpPhone').textContent = phone;
-                showModal('otpModal');
-                document.getElementById('otpCode').value = '123456';
-            }
-        }
-
         async function uploadDocuments() {
             if (!currentUser) {
                 alert('กรุณาเข้าสู่ระบบก่อน');
@@ -1641,23 +1741,84 @@
                 return;
             }
 
-            try {
-                const formData = new FormData();
-                for (let i = 0; i < files.length; i++) {
-                    formData.append('documents', files[i]);
-                }
+            alert('อัปโหลดเอกสารสำเร็จ! ทีมงานจะตรวจสอบภายใน 2-3 วันทำการ');
+            document.getElementById('documentFiles').value = '';
+        }
 
-                await apiCall('/auth/upload-documents', {
-                    method: 'POST',
-                    body: formData
+        function viewListing(listingId) {
+            const listing = mockListings.find(l => l.id === listingId);
+            if (!listing) return;
+
+            // Populate detail page
+            document.getElementById('detailTitle').textContent = listing.title;
+            
+            const displayPrice = currentCategory === 'rent' ? listing.rentPrice : listing.price;
+            const pricePrefix = currentCategory === 'rent' ? '/เดือน' : '';
+            const formattedPrice = new Intl.NumberFormat('th-TH').format(displayPrice);
+            document.getElementById('detailPrice').textContent = `฿${formattedPrice}${pricePrefix}`;
+            
+            document.getElementById('detailLocation').textContent = `📍 ${listing.location}`;
+            document.getElementById('detailBedrooms').textContent = `${listing.bedrooms} ห้องนอน`;
+            document.getElementById('detailBathrooms').textContent = `${listing.bathrooms} ห้องน้ำ`;
+            document.getElementById('detailSize').textContent = `${listing.size} ตร.ม.`;
+            document.getElementById('detailFloor').textContent = `ชั้น ${listing.floor}`;
+            document.getElementById('detailDescription').textContent = listing.description;
+
+            // Badge
+            const badgeClass = `badge-${listing.tier}`;
+            const badgeText = getTierLabel(listing.tier);
+            document.getElementById('detailBadge').innerHTML = `<div class="listing-badge ${badgeClass}" style="position: static;">${badgeText}</div>`;
+
+            // Seller info
+            document.getElementById('sellerName').textContent = 'คุณสมชาย';
+            document.getElementById('sellerTier').textContent = getTierLabel(listing.tier);
+            document.getElementById('sellerAvatar').textContent = 'ส';
+
+            // Contact info
+            document.getElementById('detailContactNumber').textContent = '***-***-****';
+            document.getElementById('detailShowContactBtn').style.display = 'block';
+            document.getElementById('detailConsentCheck').checked = false;
+            
+            // Listing code and date
+            document.getElementById('listingCode').textContent = `CS-${listing.id.toString().padStart(3, '0')}`;
+            document.getElementById('listingDate').textContent = '15 ม.ค. 2568';
+
+            // Store current listing for contact
+            currentListingId = listingId;
+
+            // Show detail page
+            showPage('listingDetail');
+        }
+
+        function showDetailContact() {
+            const checkbox = document.getElementById('detailConsentCheck');
+            if (!checkbox.checked) {
+                alert('กรุณายอมรับข้อตกลงก่อนดูเบอร์ติดต่อ');
+                return;
+            }
+
+            const listing = mockListings.find(l => l.id === currentListingId);
+            if (listing) {
+                document.getElementById('detailContactNumber').textContent = listing.contactPhone;
+                document.getElementById('detailShowContactBtn').style.display = 'none';
+            }
+        }
+
+        function shareListing() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.getElementById('detailTitle').textContent,
+                    text: 'ดูคอนโดนี้ใน CondoSwift',
+                    url: window.location.href
                 });
-
-                alert('อัปโหลดเอกสารสำเร็จ! ทีมงานจะตรวจสอบภายใน 2-3 วันทำการ');
-                document.getElementById('documentFiles').value = '';
-                
-            } catch (error) {
-                alert('อัปโหลดเอกสารสำเร็จ (Mock)! ทีมงานจะตรวจสอบภายใน 2-3 วันทำการ');
-                document.getElementById('documentFiles').value = '';
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(() => {
+                    alert('คัดลอกลิงก์แล้ว!');
+                }).catch(() => {
+                    alert('ไม่สามารถแชร์ได้');
+                });
             }
         }
 
@@ -1671,32 +1832,12 @@
             }
         }
 
-        function setButtonLoading(button, loading) {
-            const span = button.querySelector('span');
-            const loader = button.querySelector('.loading');
-            
-            if (loading) {
-                button.disabled = true;
-                if (span) span.style.display = 'none';
-                if (loader) loader.style.display = 'inline-block';
-            } else {
-                button.disabled = false;
-                if (span) span.style.display = 'inline';
-                if (loader) loader.style.display = 'none';
-            }
-        }
-
         function showAlert(containerId, type, message) {
             const container = document.getElementById(containerId);
             if (!container) return;
             
-            container.innerHTML = `
-                <div class="alert alert-${type}">
-                    ${message}
-                </div>
-            `;
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
             
-            // Auto-hide success messages
             if (type === 'success') {
                 setTimeout(() => {
                     container.innerHTML = '';
@@ -1704,111 +1845,29 @@
             }
         }
 
-        function setupFileUpload(dropZoneId, inputId, previewCallback = null) {
-            const dropZone = document.getElementById(dropZoneId);
-            const fileInput = document.getElementById(inputId);
-            
-            if (!dropZone || !fileInput) return;
-
-            dropZone.addEventListener('click', () => fileInput.click());
-            
-            dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                dropZone.classList.add('dragover');
-            });
-            
-            dropZone.addEventListener('dragleave', () => {
-                dropZone.classList.remove('dragover');
-            });
-            
-            dropZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                dropZone.classList.remove('dragover');
-                fileInput.files = e.dataTransfer.files;
-                if (previewCallback) previewCallback();
-            });
-            
-            fileInput.addEventListener('change', () => {
-                if (previewCallback) previewCallback();
-            });
-        }
-
-        function handleImagePreview() {
-            const files = document.getElementById('listingImages').files;
-            const preview = document.getElementById('imagePreview');
-            
-            preview.innerHTML = '';
-            
-            for (let i = 0; i < Math.min(files.length, 5); i++) {
-                const file = files[i];
-                const reader = new FileReader();
-                
-                reader.onload = (e) => {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.style.cssText = 'width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 1px solid #E0D6C9;';
-                    preview.appendChild(img);
-                };
-                
-                reader.readAsDataURL(file);
-            }
-        }
-
         // Navigation functions
         function showPage(pageId) {
-            // Hide all pages
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             
-            // Show selected page
             document.getElementById(pageId).classList.add('active');
             
-            // Update nav active state
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            if (event && event.target) {
-                event.target.classList.add('active');
+            
+            // Update nav active state based on page
+            if (pageId === 'home') {
+                document.querySelector('a[onclick="showPage(\'home\')"]').classList.add('active');
             }
             
-            // Load data if needed
-            if (pageId === 'listings' && document.getElementById('allListings').innerHTML === '') {
+            if (pageId === 'home' && document.getElementById('allListings').innerHTML === '') {
                 loadAllListings();
             }
-        }
-
-        function filterListings(tier) {
-            // This function is no longer used with the new filter design
-            console.log('Old filter function called, redirecting to new system');
-        }
-
-        function changePage(page) {
-            if (page < 1 || page > totalPages) return;
             
-            const search = document.getElementById('searchInput').value;
-            const location = document.getElementById('locationFilter').value;
-            const priceRange = document.getElementById('priceFilter').value;
-            const tier = document.getElementById('tierFilter').value;
-            const bedroom = document.getElementById('bedroomFilter').value;
-            
-            loadAllListings(page, tier || 'all', search, location, priceRange, bedroom);
-            
-            // Scroll to top of listings
-            document.getElementById('listings').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function showPostListingModal() {
-            if (!currentUser) {
-                showModal('authModal');
-                return;
-            }
-            showModal('postListingModal');
-        }
-
-        function viewListing(listingId) {
-            // In a real app, this would navigate to a detailed view
-            contactSeller(listingId);
+            // Scroll to top when changing pages
+            window.scrollTo(0, 0);
         }
 
         // Modal functions
@@ -1821,40 +1880,12 @@
             document.getElementById(modalId).style.display = 'none';
             document.body.style.overflow = 'auto';
             
-            // Clear alerts when closing modals
             const alertContainers = ['alertContainer', 'otpAlerts', 'postListingAlerts'];
             alertContainers.forEach(id => {
                 const container = document.getElementById(id);
                 if (container) container.innerHTML = '';
             });
         }
-
-        // Initialize page when listings link is clicked
-        document.addEventListener('click', function(e) {
-            if (e.target.textContent === 'ประกาศทั้งหมด' || e.target.textContent === 'ดูประกาศทั้งหมด') {
-                setTimeout(() => {
-                    if (document.getElementById('allListings').innerHTML === '') {
-                        loadAllListings();
-                    }
-                }, 100);
-            }
-        });
-
-        // Add sparkle animation CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes sparkle {
-                0%, 100% { 
-                    opacity: 0.7; 
-                    transform: scale(1) rotate(0deg); 
-                }
-                50% { 
-                    opacity: 1; 
-                    transform: scale(1.2) rotate(180deg); 
-                }
-            }
-        `;
-        document.head.appendChild(style);
     </script>
 </body>
 </html>
